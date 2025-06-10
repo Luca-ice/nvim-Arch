@@ -995,6 +995,7 @@ require('lazy').setup({
   require 'custom.plugins.cmp',
   require 'custom.plugins.indent',
   require 'custom.plugins.diffview',
+  require 'custom.plugins.gitblame',
   -- require 'kickstart.plugins.gitsigns', -- adds gitsigns recommend keymaps
 
   -- NOTE: The import below can automatically add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`
