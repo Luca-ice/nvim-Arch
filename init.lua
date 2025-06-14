@@ -165,7 +165,8 @@ vim.o.scrolloff = 10
 -- instead raise a dialog asking if you wish to save the current file(s)
 -- See `:help 'confirm'`
 vim.o.confirm = true
-
+vim.o.exrc = true
+vim.o.secure = true
 -- [[ Basic Keymaps ]]
 --  See `:help vim.keymap.set()`
 
@@ -996,6 +997,8 @@ require('lazy').setup({
   require 'custom.plugins.indent',
   require 'custom.plugins.diffview',
   require 'custom.plugins.gitblame',
+  require 'custom.plugins.sleuth',
+  require 'custom.plugins.copilot',
   -- require 'kickstart.plugins.gitsigns', -- adds gitsigns recommend keymaps
 
   -- NOTE: The import below can automatically add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`

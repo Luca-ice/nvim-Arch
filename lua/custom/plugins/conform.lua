@@ -1,48 +1,33 @@
 -- lua/plugins/init.lua (or the file that lazy.nvim imports for your plugins)
 
 return {
-    -- ... other plugins you have ...
+	'stevearc/conform.nvim',
+	event = 'BufWritePre', -- Load only when you save a buffer
+	cmd = 'Conform',
+	config = function()
+		require('conform').setup {
+			-- By removing the 'format_on_save' table, we disable automatic formatting.
+			formatters_by_ft = {
+				typescript = { 'prettier' },
+				javascript = { 'prettier' },
+				typescriptreact = { 'prettier' },
+				javascriptreact = { 'prettier' },
+				json = { 'prettier' },
+				jsonc = { 'prettier' },
+				yaml = { 'prettier' },
+				markdown = { 'prettier' },
+				php = { "none" }, -- Keep this from our last conversation to prevent LSP formatting
+			},
+		}
 
-    -- This is the crucial part for conform.nvim
-    {
-        'stevearc/conform.nvim',
-        -- This 'lazy = false' ensures it loads on startup for easier debugging.
-        -- For production, you might want to use 'event = { "BufWritePre" }'
-        -- or 'cmd = { "ConformInfo", "ConformFormat" }'
-        lazy = false,
-        -- The 'config' function is where your provided setup code goes.
-        config = function()
-            local conform = require 'conform'
+		-- Keymap to format the entire buffer in NORMAL mode
+		vim.keymap.set({ 'n' }, '<leader>fm', function()
+			require('conform').format { async = true, lsp_fallback = true }
+		end, { desc = 'Format buffer' })
 
-            conform.setup {
-                format_on_save = {
-                    timeout_ms = 500,
-                    lsp_fallback = true,
-                },
-                formatters_by_ft = {
-                    typescript = { 'prettier' },
-                    javascript = { 'prettier' },
-                    typescriptreact = { 'prettier' },
-                    javascriptreact = { 'prettier' },
-                    json = { 'prettier' },
-                    jsonc = { 'prettier' },
-                    yaml = { 'prettier' },
-                    markdown = { 'prettier' },
-                    -- Add PHP if you installed a PHP formatter like php-cs-fixer and want to use it with conform
-                    -- php = { "php_cs_fixer" },
-                },
-            }
-
-            -- Your manual format keymap also goes here
-            vim.keymap.set({ 'n', 'v' }, '<leader>fm', function()
-                conform.format {
-                    lsp_fallback = true,
-                    async = true,
-                    timeout_ms = 1000,
-                }
-            end, { desc = 'Format buffer with Conform' })
-        end,
-    },
-
-    -- ... potentially more plugins ...
+		-- Keymap to format a visual selection in VISUAL mode
+		vim.keymap.set({ 'v' }, '<leader>fv', function()
+			require('conform').format { async = true, lsp_fallback = true }
+		end, { desc = 'Format selected text' })
+	end,
 }
